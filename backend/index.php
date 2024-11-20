@@ -1,7 +1,7 @@
 <?php
-include "Aircraft.php";
-include "Airport.php";
-include "Flight.php";
+include_once "Aircraft.php";
+include_once "Airport.php";
+include_once "Flight.php";
 
 echo "I am not alive. 🐱‍🐉<br><br>"; // windows + punkts = emoji
 
@@ -27,4 +27,5 @@ echo "Origin: " . $mansFlight->origin->kods . " (" . $mansFlight->origin->platum
 echo "Destination: " . $mansFlight->destination->kods . " (" . $mansFlight->destination->platums . ", " . $mansFlight->destination->garums . ")<br>";
 echo "Departure Time: " . $mansFlight->departureTime->format('Y-m-d H:i:s') . "<br>";
 echo "Aircraft: " . $mansFlight->aircraft->razotajs . " " . $mansFlight->aircraft->modelis . "<br>";
+
 ?>

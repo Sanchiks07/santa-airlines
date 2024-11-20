@@ -1,7 +1,7 @@
 <?php
 
-include "Aiport.php";
-include "Aicraft.php";
+include_once "Airport.php";
+include_once "Aircraft.php";
 
 class Flight {
     public function __construct(public $flightCode,
@@ -27,19 +27,19 @@ class Flight {
         // Haversine formula
         $a = sin($platDelta / 2) * sin($platDelta / 2) +
              cos($platFrom) * cos($platTo) *
-             sin($lonDelta / 2) * sin($lonDelta / 2);
+             sin($garDelta / 2) * sin($garDelta / 2);
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
         $distance = $earthRadius * $c;
 
-        return $distance; // Return the distance
+        return $distance;
     }
 
     public function getDuration() {
-        $averageSpeed = $this->aircraft->averageSpeed; // Vidējais ātrums lidmašīnai
+        $vidAtrums = $this->aircraft->vidAtrums; // Vidējais ātrums lidmašīnai
         $distance = $this->getDistance(); // Attālums starp lidostām
 
         // Aprēķinām lidojuma ilgumu stundās
-        $flightDurationHours = $distance / $averageSpeed; // stundās
+        $flightDurationHours = $distance / $vidAtrums; // stundās
         $flightDurationMinutes = $flightDurationHours * 60; // minūtēs
 
         // Pievienojam 30 minūtes sagatavošanai
@@ -49,7 +49,6 @@ class Flight {
     }
 
     public function getLandingTime() {
-        // Aprēķinām lidojuma ilgumu
         $durationInMinutes = $this->getDuration();
 
         // Izveidojam jaunu DateTime objektu, lai aprēķinātu nosēšanās laiku
@@ -57,10 +56,10 @@ class Flight {
         $landingTime->modify("+{$durationInMinutes} minutes"); // Pievienojam lidojuma ilgumu
 
         // Iegūstam laika joslu no API
-        $latitude = $this->destination->latitude;
-        $longitude = $this->destination->longitude;
+        $platums = $this->destination->platums;
+        $garums = $this->destination->garums;
 
-        $timezoneApiUrl = "https://tu.proti.lv/timezones/?latitude={$latitude}&longitude={$longitude}";
+        $timezoneApiUrl = "https://tu.proti.lv/timezones/?latitude={$platums}&longitude={$garums}";
         $timezoneData = json_decode(file_get_contents($timezoneApiUrl), true);
 
         if (isset($timezoneData['timezone'])) {
@@ -68,7 +67,9 @@ class Flight {
             $landingTime->setTimezone(new DateTimeZone($timezone)); // Iestata laika joslu
         }
 
-        return $landingTime; // Atgriežam nosēšanās laiku
+        return $landingTime;
     }
 
 }
+
+?>
