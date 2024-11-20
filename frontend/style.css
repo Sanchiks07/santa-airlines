@@ -1,0 +1,12 @@
+body {
+    font-family: 'Josefin Sans', sans-serif;
+    background-color: #000000;
+    color: #146b3a;
+    text-align: center;
+}
+
+.loading-spinner {
+    /* Pievieno animāciju, lai lidotu lidmašīna */
+}
+
+/* Pievieno pārējās krāsas un izkārtojumu */
